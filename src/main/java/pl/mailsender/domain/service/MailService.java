@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import pl.mailsender.web.MailLeadPayLoad;
 
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
@@ -20,8 +22,7 @@ public class MailService {
     @Autowired
     JavaMailSender javaMailSender;
 
-    @Transactional
-    public void newLeadMessage() {
+    public void newLeadMessage(MailLeadPayLoad mailLeadPayLoad) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -41,8 +42,7 @@ public class MailService {
         }
     }
 
-    @Transactional
-    public void noPaymentMessage() {
+    public void noPaymentMessage(MailLeadPayLoad mailLeadPayLoad) {
 
         try {
 
@@ -64,8 +64,7 @@ public class MailService {
         }
     }
 
-    @Transactional
-    public void inVoicePaid() {
+    public void inVoicePaid(MailLeadPayLoad mailLeadPayLoad) {
 
         try {
 
