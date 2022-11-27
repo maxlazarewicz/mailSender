@@ -21,6 +21,8 @@ public class MailService {
 
     @Autowired
     JavaMailSender javaMailSender;
+    @Autowired
+    MailLeadPayLoad mailLeadPayLoad;
 
     public void newLeadMessage(MailLeadPayLoad mailLeadPayLoad) {
         try {
@@ -29,11 +31,14 @@ public class MailService {
 
             helper.setTo("mxlazarewicz@gmail.com");
 
-            helper.setSubject("Wystawiliśmy Ci nową fakturę");
+            helper.setSubject("Wystawiliśmy  Ci nową fakturę");
 
-            helper.setText("Wystawiliśmy Ci nową fakturę za użytkowanie lokalu przy ul. " +
-                    "+ propertiesAdress  " + "w kwocie +  {kwota} " + "\n" +
-                    "Prosimy o wpłate w terminie");
+            helper.setText("Witaj, " + mailLeadPayLoad.getTenant() + "\n" +
+                    " Wystawiliśmy Ci nową fakutrę o numerze " + mailLeadPayLoad.getLeadId() + "\n" +
+                    " za czynsz administracyjy w kwocie" + mailLeadPayLoad.getAdministrativeRent() + "\n" +
+                    " energię elektryczną " + mailLeadPayLoad.getElectricityPayment() + "\n" +
+                    " i zużycie wody" + mailLeadPayLoad.getWaterPayment() + "\n" +
+                    " Prosimy o płatność w terminie.");
 
             javaMailSender.send(message);
 
@@ -53,9 +58,9 @@ public class MailService {
 
             helper.setSubject("Faktura nie została zapłacona w terminie");
 
-            helper.setText("Faktura z dnia + {lead.creationdate} nie została opłacona" + "\n"
-                    + "Prosimy o natychmiastowe uregulowanie płatności" + "\n" +
-                    "Ps. Chłopaki już po Ciebie jadą.");
+            helper.setText("Faktura z dnia " + mailLeadPayLoad.getCreationDate() +
+                    "nie została opłacona w terminie" + "\n" +
+                    "Prosimy o natychmiastowe uregulowanie płatności.");
 
             javaMailSender.send(message);
 
@@ -75,7 +80,8 @@ public class MailService {
 
             helper.setSubject("Nowa płatność od wynajmującego");
 
-            helper.setText("Faktura z dnia {date} została opłacona");
+            helper.setText("Faktura o numerze " + mailLeadPayLoad.getLeadId() + "\n" +
+                    "została opłacona przez użytkownika " + mailLeadPayLoad.getTenant());
 
             javaMailSender.send(message);
 
